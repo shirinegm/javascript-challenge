@@ -1,0 +1,7 @@
+.jumbotron {
+    background-image: url(../images/UFO-Dorsch.jpeg);
+    background-size: cover;
+    min-height: 300px;
+    text-align: center;
+    color:aliceblue;
+}
