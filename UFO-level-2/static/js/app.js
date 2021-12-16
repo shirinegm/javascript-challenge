@@ -61,11 +61,15 @@ function runEnter() {
     Object.entries(filter).forEach(([key, value]) => {
 
     // Use the key to determine which array to filter the value on
-      if (key === 'datetime') {filteredSet = sightings.filter(sighting => (sighting.datetime === filter.value));}
-      else if (key === 'city') {filteredSet = sightings.filter(sighting => (sighting.city === filter.value));}
-      else if (key === 'state') {filteredSet = sightings.filter(sighting => (sighting.state === filter.value));}
-      else if (key === 'city') {filteredSet = sightings.filter(sighting => (sighting.city === filter.value));}
-
+      if (key === 'datetime') {filteredSet = sightings.filter(sighting => (sighting.datetime === value));}
+      else if (key === 'city') {filteredSet = sightings.filter(sighting => (sighting.city === value));}
+      else if (key === 'state') {filteredSet = sightings.filter(sighting => (sighting.state === value));}
+      else if (key === 'country') {filteredSet = sightings.filter(sighting => (sighting.country === value));}
+      else if (key === 'shape') {filteredSet = sightings.filter(sighting => (sighting.shape === value));}
+      else {
+        let cell = row.append("td");
+        cell.text("No sightings found");
+      }
     });
   });
 
