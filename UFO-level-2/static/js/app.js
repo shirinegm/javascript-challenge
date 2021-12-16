@@ -20,25 +20,68 @@ function runEnter() {
   d3.event.preventDefault();
   
   // Select the input element and get the raw HTML node
-  let inputDate = d3.select("#datetime");
-  let inputCity = d3.select("#city");
-  let inputState = d3.select("#state");
-  let inputCountry = d3.select("#country");
-  let inputShape = d3.select("#shape"); 
+  let datetime = d3.select("#datetime");
+  let city = d3.select("#city");
+  let state = d3.select("#state");
+  let country = d3.select("#country");
+  let shape = d3.select("#shape"); 
 
   // Get the value property of the input element
-  let filterDate = inputDate.property("value");
-  let filterCity = inputCity.property("value");
-  let filterState = inputState.property("value");
-  let filterCountry = inputCountry.property("value");
-  let filterShape = inputShape.property("value");
+  let filterDate = datetime.property("value");
+  let filterCity = city.property("value");
+  let filterState = state.property("value");
+  let filterCountry = country.property("value");
+  let filterShape = shape.property("value");
 
-  let filteredByDate = sightings.filter(sighting => sighting.datetime === filterDate);
-  console.log(filterDate);
-  console.log(filteredByDate);
+  //Collect Filter fields
+  let filterFields = {datetime: filterDate, 
+    city: filterCity, 
+    state: filterState, 
+    country: filterCountry, 
+    shape: filterShape
+  };
+
+  // Remove empty filter fields
+  for (const key in filterFields) {
+    if (filterFields[key] === '') {
+      delete filterFields[key];
+    }
+  }
+
+  console.log(filterFields);
+
+  let filteredSet = [];
+
+  //Put the search fields in a list
+  searchFilters = [filterFields];
+
+  searchFilters.forEach((filter) => {
+
+    // Iterate through each key and value
+    Object.entries(filter).forEach(([key, value]) => {
+
+    // Use the key to determine which array to filter the value on
+      if (key === 'datetime') {filteredSet = sightings.filter(sighting => (sighting.datetime === filter.value));}
+      else if (key === 'city') {filteredSet = sightings.filter(sighting => (sighting.city === filter.value));}
+      else if (key === 'state') {filteredSet = sightings.filter(sighting => (sighting.state === filter.value));}
+      else if (key === 'city') {filteredSet = sightings.filter(sighting => (sighting.city === filter.value));}
+
+    });
+  });
+
+  // let filteredSet = sightings.filter(sighting => 
+  //   (sighting.datetime === filterDate || 
+  //     sighting.city === filterCity || 
+  //     sighting.state === filterState ||
+  //     sighting.country === filterCountry ||
+  //     sighting.shape === filterShape
+  // ));
+
+  console.log(filteredSet);
+  
 
   // Then, select the table element by id name
-  var table = d3.select("#ufo-table");
+  //var table = d3.select("#ufo-table");
 
   // clear the table
   //table.html("");
@@ -46,7 +89,9 @@ function runEnter() {
   // append filtered information to the table
   var tbody = d3.select("tbody");
 
-  filteredByDate.forEach((sighting) => {
+  tbody.html("");
+
+  filteredSet.forEach((sighting) => {
     var row = tbody.append("tr");
     Object.entries(sighting).forEach(([key, value]) => {
       let cell = row.append("td");
