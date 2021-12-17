@@ -34,7 +34,8 @@ function runEnter() {
   let filterShape = shape.property("value");
 
   //Collect Filter fields
-  let filterFields = {datetime: filterDate, 
+  let filterFields = {
+    datetime: filterDate, 
     city: filterCity, 
     state: filterState, 
     country: filterCountry, 
@@ -50,45 +51,67 @@ function runEnter() {
 
   console.log(filterFields);
 
-  let filteredSet = [];
-
   //Put the search fields in a list
   searchFilters = [filterFields];
 
-  searchFilters.forEach((filter) => {
 
-    // Iterate through each key and value
-    Object.entries(filter).forEach(([key, value]) => {
+  // searchFilters.forEach((filter) => {
 
-    // Use the key to determine which array to filter the value on
-      if (key === 'datetime') {filteredSet = sightings.filter(sighting => (sighting.datetime === value));}
-      else if (key === 'city') {filteredSet = sightings.filter(sighting => (sighting.city === value));}
-      else if (key === 'state') {filteredSet = sightings.filter(sighting => (sighting.state === value));}
-      else if (key === 'country') {filteredSet = sightings.filter(sighting => (sighting.country === value));}
-      else if (key === 'shape') {filteredSet = sightings.filter(sighting => (sighting.shape === value));}
-      else {
-        let cell = row.append("td");
-        cell.text("No sightings found");
-      }
-    });
-  });
+  //   // Iterate through each key and value
+  //   Object.entries(filter).forEach(([key, value]) => {
+
+  //   // Use the key to determine which array to filter the value on
+  //     if (key === 'datetime') {filteredSet = sightings.filter(sighting => (sighting.datetime === value));}
+  //     else if (key === 'city') {filteredSet = sightings.filter(sighting => (sighting.city === value));}
+  //     else if (key === 'state') {filteredSet = sightings.filter(sighting => (sighting.state === value));}
+  //     else if (key === 'country') {filteredSet = sightings.filter(sighting => (sighting.country === value));}
+  //     else if (key === 'shape') {filteredSet = sightings.filter(sighting => (sighting.shape === value));}
+  //     else {
+  //       let cell = row.append("td");
+  //       cell.text("No sightings found");
+  //     }
+  //   });
+  // });
+
 
   // let filteredSet = sightings.filter(sighting => 
-  //   (sighting.datetime === filterDate || 
-  //     sighting.city === filterCity || 
-  //     sighting.state === filterState ||
-  //     sighting.country === filterCountry ||
+  //   (sighting.datetime === filterDate 
+  //     sighting.city === filterCity && 
+  //     sighting.state === filterState &&
+  //     sighting.country === filterCountry &&
   //     sighting.shape === filterShape
   // ));
 
+  let filteredSet = sightings;
+
+  if (filterDate !== '') {filteredSet = filteredSet.filter(sighting => (sighting.datetime === filterDate));}
+  if (filterCity !== '') {filteredSet = filteredSet.filter(sighting => (sighting.city === filterCity));}
+  if (filterState !== '') {filteredSet = filteredSet.filter(sighting => (sighting.state === filterState));}
+  if (filterCountry !== '') {filteredSet = filteredSet.filter(sighting => (sighting.country === filterCountry));}
+  if (filterShape !== '') {filteredSet = filteredSet.filter(sighting => (sighting.shape === filterShape));}
+
   console.log(filteredSet);
   
+  // Prepare the array to be dynamically populated by the shapes in the sightings data
+  let allShapes = [];
+  
+  //for each loop to build the dictionary, add the shape if its not in the dict
+  sightings.forEach(sighting => {
+    if (!allShapes.includes(sighting.shape)) {
+      allShapes.push(sighting.shape);
+    }
+  });
 
-  // Then, select the table element by id name
-  //var table = d3.select("#ufo-table");
+  // Populate the drop down menu with the distinct options in the data for shapes  
+  let ddlShapes = d3.select('#ddlshape');
+  allShapes.forEach(option => {
+    let option = ddlShapes.append("option");
+    option.text(option);
+    option.value(option);
+  });
 
-  // clear the table
-  //table.html("");
+  console.log(ddlShapes);
+  
 
   // append filtered information to the table
   var tbody = d3.select("tbody");
