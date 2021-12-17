@@ -3,6 +3,29 @@ console.log("app.js loaded!");
 // Assign the data from `data.js` to a descriptive variable
 let sightings = data;
 
+// Prepare the array to be dynamically populated by the shapes in the sightings data
+let allShapes = [];
+  
+//for each loop to build the dictionary, add the shape if its not in the dict
+sightings.forEach(sighting => {
+  if (!allShapes.includes(sighting.shape)) {
+    allShapes.push(sighting.shape);
+  }
+});
+
+console.log(allShapes);
+
+// Grab the drop down handler 
+let ddlShapes = d3.select('#ddlshape');
+
+// Populate the drop down menu with the distinct options in the data for shapes
+allShapes.forEach(option => {
+  let optionItem = ddlShapes.append("option");
+  optionItem.text(option);
+});
+
+console.log(ddlShapes);
+
 // Select the button
 let button = d3.select("#filter-btn");
 
@@ -24,7 +47,7 @@ function runEnter() {
   let city = d3.select("#city");
   let state = d3.select("#state");
   let country = d3.select("#country");
-  let shape = d3.select("#shape"); 
+  let shape = d3.select("#ddlshape"); 
 
   // Get the value property of the input element
   let filterDate = datetime.property("value");
@@ -54,34 +77,6 @@ function runEnter() {
   //Put the search fields in a list
   searchFilters = [filterFields];
 
-
-  // searchFilters.forEach((filter) => {
-
-  //   // Iterate through each key and value
-  //   Object.entries(filter).forEach(([key, value]) => {
-
-  //   // Use the key to determine which array to filter the value on
-  //     if (key === 'datetime') {filteredSet = sightings.filter(sighting => (sighting.datetime === value));}
-  //     else if (key === 'city') {filteredSet = sightings.filter(sighting => (sighting.city === value));}
-  //     else if (key === 'state') {filteredSet = sightings.filter(sighting => (sighting.state === value));}
-  //     else if (key === 'country') {filteredSet = sightings.filter(sighting => (sighting.country === value));}
-  //     else if (key === 'shape') {filteredSet = sightings.filter(sighting => (sighting.shape === value));}
-  //     else {
-  //       let cell = row.append("td");
-  //       cell.text("No sightings found");
-  //     }
-  //   });
-  // });
-
-
-  // let filteredSet = sightings.filter(sighting => 
-  //   (sighting.datetime === filterDate 
-  //     sighting.city === filterCity && 
-  //     sighting.state === filterState &&
-  //     sighting.country === filterCountry &&
-  //     sighting.shape === filterShape
-  // ));
-
   let filteredSet = sightings;
 
   if (filterDate !== '') {filteredSet = filteredSet.filter(sighting => (sighting.datetime === filterDate));}
@@ -91,26 +86,6 @@ function runEnter() {
   if (filterShape !== '') {filteredSet = filteredSet.filter(sighting => (sighting.shape === filterShape));}
 
   console.log(filteredSet);
-  
-  // Prepare the array to be dynamically populated by the shapes in the sightings data
-  let allShapes = [];
-  
-  //for each loop to build the dictionary, add the shape if its not in the dict
-  sightings.forEach(sighting => {
-    if (!allShapes.includes(sighting.shape)) {
-      allShapes.push(sighting.shape);
-    }
-  });
-
-  // Populate the drop down menu with the distinct options in the data for shapes  
-  let ddlShapes = d3.select('#ddlshape');
-  allShapes.forEach(option => {
-    let option = ddlShapes.append("option");
-    option.text(option);
-    option.value(option);
-  });
-
-  console.log(ddlShapes);
   
 
   // append filtered information to the table
