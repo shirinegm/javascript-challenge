@@ -24,7 +24,7 @@ allShapes.forEach(option => {
   optionItem.text(option);
 });
 
-console.log(ddlShapes);
+//console.log(ddlShapes);
 
 // Select the button
 let button = d3.select("#filter-btn");
@@ -72,7 +72,7 @@ function runEnter() {
     }
   }
 
-  console.log(filterFields);
+  //console.log(filterFields);
 
   //Put the search fields in a list
   searchFilters = [filterFields];
@@ -85,7 +85,7 @@ function runEnter() {
   if (filterCountry !== '') {filteredSet = filteredSet.filter(sighting => (sighting.country === filterCountry));}
   if (filterShape !== '') {filteredSet = filteredSet.filter(sighting => (sighting.shape === filterShape));}
 
-  console.log(filteredSet);
+  //console.log(filteredSet);
   
 
   // append filtered information to the table
